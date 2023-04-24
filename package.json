@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "preinstall": "npx npm-force-resolutions",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "webpack serve --output-pathinfo --progress",
     "build": "npx webpack --env NODE_ENV=production",
     "build.dev": "npx webpack --env NODE_ENV=dev",
