@@ -20,14 +20,19 @@ const User = () => {
   };
 
   return (
-    <div className="user-info coontainer">
+    <div className="container">
       <h2>User Information</h2>
       {
         !isLoading &&
-        <div role="user-detail" className="user-detail">
+        <div data-testid="user-info" className="user-info">
           { user ?
-            <h2 role="user-name">{user.name}</h2> :
-            <p>User not found</p>
+            <>
+              <h2 data-testid="user-name">Name: {user.name}</h2>
+              <p data-testid="user-mail">Email: {user.email}</p>
+              <p data-testid="user-phone">Phone: {user.phone}</p>
+              <p data-testid="user-company">Company: {user.company.name}</p>
+            </> :
+            <p data-testid="user-not-found">User not found</p>
           }
         </div>
       }
