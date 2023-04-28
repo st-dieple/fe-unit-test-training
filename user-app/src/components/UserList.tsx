@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { Link } from "react-router-dom";
 import Loading from "../shared/components/Loading";
+import { API_DOMAIN } from '../shared/constant';
 
 const UserList = () => {
 
@@ -13,7 +14,7 @@ const UserList = () => {
   }, [])
 
   const getUsers = () => {
-    axios.get('https://jsonplaceholder.typicode.com/users').then((res: any) => {
+    axios.get(`${API_DOMAIN}`).then((res: any) => {
       setUserList(res.data);
     }).catch(err => {
       console.log(err)

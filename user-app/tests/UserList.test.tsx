@@ -6,9 +6,10 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import UserList from '../src/components/UserList';
 import { DUMMY_DATA } from './constant';
+import { API_DOMAIN } from '../src/shared/constant';
 
 const server = setupServer(
-  rest.get('https://jsonplaceholder.typicode.com/users', (req, res, ctx) => {
+  rest.get(`${API_DOMAIN}`, (req, res, ctx) => {
     return res(ctx.json([DUMMY_DATA]));
   }),
 );
@@ -34,7 +35,7 @@ describe('User List Page', () => {
 
   test('Get list user faild', async () => {
     server.use(
-      rest.get('https://jsonplaceholder.typicode.com/users', (req, res, ctx) => {
+      rest.get(`${API_DOMAIN}`, (req, res, ctx) => {
         return res(ctx.status(400));
       }),
     );
@@ -49,7 +50,7 @@ describe('User List Page', () => {
 
   test('Show no data found screen', async () => {
     server.use(
-      rest.get('https://jsonplaceholder.typicode.com/users', (req, res, ctx) => {
+      rest.get(`${API_DOMAIN}`, (req, res, ctx) => {
         return res(ctx.json([]));
       }),
     );

@@ -6,6 +6,7 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
 import User from '../src/components/User';
+import { API_DOMAIN } from '../src/shared/constant';
 
 const DUMMY_USER = {
   'id': 3,
@@ -32,7 +33,7 @@ const DUMMY_USER = {
 };
 
 const server = setupServer(
-  rest.get('https://jsonplaceholder.typicode.com/users/3', (req, res, ctx) => {
+  rest.get(`${API_DOMAIN}/3`, (req, res, ctx) => {
     return res(ctx.json(DUMMY_USER ));
   }),
 );
@@ -63,7 +64,7 @@ describe('User Information', () => {
 
   test('Get list user failed', async () => {
     server.use(
-      rest.get('https://jsonplaceholder.typicode.com/users/3', (req, res, ctx) => {
+      rest.get(`${API_DOMAIN}/3`, (req, res, ctx) => {
         return res(ctx.status(400));
       }),
     );

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { API_DOMAIN } from '../shared/constant'
 
 const User = () => {
   const { id } = useParams();
@@ -13,7 +14,7 @@ const User = () => {
 
   const getUserDetail = () => {
     setLoading(true);
-    axios.get(`https://jsonplaceholder.typicode.com/users/${id}`).then((res: any) => {
+    axios.get(`${API_DOMAIN}/${id}`).then((res: any) => {
       setUser(res.data);
       console.log(user, res);
     }).finally(() => setLoading(false));
