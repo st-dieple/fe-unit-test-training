@@ -40,6 +40,7 @@ const UserList = () => {
             </thead>
             <tbody>
               {
+                userList.length ?
                 userList.map((user: any) => (
                   <tr key={ user.id } className="border-b dark:border-neutral-500">
                     <td className="whitespace-nowrap px-6 py-4">{ user.name }</td>
@@ -49,7 +50,8 @@ const UserList = () => {
                       <Link data-testid={`${user.id}`} to={`/user/${user.id}`}>Detail</Link>
                     </td>
                   </tr>
-                ))
+                )) :
+                <p data-testid="user-no-data">No data fount</p>
               }
             </tbody>
           </table> 

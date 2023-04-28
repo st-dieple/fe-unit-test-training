@@ -1,7 +1,7 @@
-import React from 'react';
 import '@testing-library/jest-dom';
+import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import UserList from '../src/components/UserList';
@@ -14,9 +14,9 @@ const server = setupServer(
 );
 
 describe('User List Page', () => {
-  
+
   test('Show loading screen while fetching list user', () => {
-    renderWithProviders(<UserList />);
+    render(<UserList />, { wrapper: BrowserRouter });
     expect(screen.getByRole('heading')).toHaveTextContent('User List');
     expect(screen.getByTestId('loading')).toBeInTheDocument();
   });
@@ -24,16 +24,43 @@ describe('User List Page', () => {
   test('Get list user success', async () => {
     render(<UserList />, { wrapper: BrowserRouter });
     await waitFor(() => {
+      // Use `queryBy*` queries rather than `getBy*` for checking element is NOT present
+      expect(screen.queryByTestId('loading')).not.toBeInTheDocument();
+    });
+    await waitFor(() => {
       expect(screen.getByTestId('user-list')).toBeInTheDocument();
     });
   });
 
   test('Get list user faild', async () => {
-    //
+    server.use(
+      rest.get('https://jsonplaceholder.typicode.com/users', (req, res, ctx) => {
+        return res(ctx.status(400));
+      }),
+    );
+    render(<UserList />);
+    await waitFor(() => {
+      expect(screen.queryByTestId('loading')).not.toBeInTheDocument();
+    });
+    await waitFor(() => {
+      expect(screen.getByText('Something wrong!')).toBeInTheDocument();
+    })
   });
 
   test('Show no data found screen', async () => {
-    //
+    server.use(
+      rest.get('https://jsonplaceholder.typicode.com/users', (req, res, ctx) => {
+        return res(ctx.json([]));
+      }),
+    );
+    render(<UserList />);
+    await waitFor(() => {
+      expect(screen.queryByTestId('loading')).not.toBeInTheDocument();
+    });
+    await waitFor(() => {
+      expect(screen.getByTestId('user-no-data')).toBeInTheDocument();
+    });
+    
   });
 
 });
